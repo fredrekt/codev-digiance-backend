@@ -58,28 +58,29 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email })
 
         if(user && (await bcrypt.compare(password, user.password))){
-
+            res.status(200).json(user);
         }
 
-        res.status(200).json({ message: "Authorized User!" })
+        res.status(400).json({ message: "Wrong Credentials!" })
     } 
     catch (error) {
-        res.status(500).json({ message: "Wrong credentials!" })
+        res.status(500).json({ message: "Something wen't wrong!" })
     }
 })
 
 // PATCH
 
 // update one user
-router.patch('/', async (req, res) => {
+router.patch('/change-password', async (req, res) => {
     const { email, password } = req.body
+    const encryptPassword = await bcrypt.hash(password, 10)
     try {
         const user = await User.findOneAndUpdate(
             {
                 email
             },
             {
-                password
+                password: encryptPassword
             },
             {
                 new: true
