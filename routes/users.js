@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
+const bcrypt = require('bcryptjs')
 
 // GET
 
@@ -34,10 +35,11 @@ router.get('/:id', async (req, res) => {
 // create user
 router.post('/', async (req, res) => {
     const { email, password } = req.body
+    const encryptPassword = await bcrypt.hash(password, 10)
 
     const user = new User({
         email: email,
-        password: password
+        password: encryptPassword
     })
     try {
         const newUser = await user.save()
@@ -55,7 +57,9 @@ router.post('/login', async (req, res) => {
         console.log(`${email} & ${password}`)
         const user = await User.findOne({ email })
 
-        if(user)
+        if(user && (await bcrypt.compare(password, user.password))){
+
+        }
 
         res.status(200).json({ message: "Authorized User!" })
     } 
