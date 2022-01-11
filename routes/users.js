@@ -48,6 +48,22 @@ router.post('/', async (req, res) => {
     }
 })
 
+// login
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body
+    try {
+        console.log(`${email} & ${password}`)
+        const user = await User.findOne({ email })
+
+        if(user)
+
+        res.status(200).json({ message: "Authorized User!" })
+    } 
+    catch (error) {
+        res.status(500).json({ message: "Wrong credentials!" })
+    }
+})
+
 // PATCH
 
 // update one user
