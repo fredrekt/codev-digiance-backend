@@ -18,7 +18,15 @@ router.get('/', async (req, res) => {
 // get single user
 router.get('/:id', async (req, res) => {
     const { id } = req.params
-    res.send(id)
+    const email = id
+    try {
+        const user = await User.findOne({ email })
+        if(user) res.status(201).json(user)
+        else res.status(201).json({ message: "no user found" })
+    } 
+    catch (error) {
+     res.status(501).json({ message: error.message })   
+    }
 })
 
 // POST
