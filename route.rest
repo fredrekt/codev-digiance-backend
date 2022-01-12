@@ -11,8 +11,8 @@ POST http://localhost:1337/users
 Content-Type: application/json
 
 {
-    "email": "codev1@gmail.com",
-    "password": "fred1"
+    "email": "codev@gmail.com",
+    "password": "freddev"
 }
 
 ####
